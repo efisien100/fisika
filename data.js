@@ -3,123 +3,176 @@
    Ganti isi di bawah, simpan, lalu upload ulang ke GitHub.
    ============================================================ */
 
-const KELAS = {
-  mapel: "Informatika",
-  kelas: "XI IPA 2",
+const SITUS = {
+  mapel: "Fisika",
   guru: "Pak Seno",
   tahunAjaran: "2026/2027",
-  sapaan: "Semua materi dan tugas ada di sini. Cek tenggatnya, kerjakan, lalu kumpulkan lewat tombol di tiap tugas.",
+  sapaan: "Pilih kelasmu, cek tenggat tugas, lalu buka materi yang kamu butuhkan. Tugas dikumpulkan lewat tombol di tiap kartu.",
 };
 
-/* Daftar bab / topik. Dipakai sebagai filter di bagian Materi. */
-const TOPIK = ["Algoritma", "Pemrograman", "Jaringan", "Data"];
+/* ---------- DAFTAR KELAS, SEMESTER, DAN TOPIK ----------
+   Nama topik di sini harus SAMA PERSIS dengan yang dipakai di MATERI dan TUGAS. */
+const KURIKULUM = {
+  XI: {
+    1: ["Kinematika", "Dinamika Gerak", "Statika Struktur", "Usaha dan Energi", "Fluida Statis dan Dinamis"],
+    2: ["Gelombang, Bunyi, dan Cahaya", "Suhu dan Kalor", "Termodinamika"],
+  },
+  XII: {
+    1: ["Listrik Statis", "Listrik Arus Searah (DC)", "Kemagnetan", "Arus Bolak-Balik (AC)", "Gelombang Elektromagnetik"],
+    2: ["Pengantar Elektronika Digital", "Relativitas", "Gejala Kuantum", "Fisika Inti dan Radioaktivitas"],
+  },
+};
 
 /* ---------- TUGAS ----------
-   id        : unik, tanpa spasi (dipakai untuk centang "sudah dikumpulkan")
-   deadline  : format "TAHUN-BULAN-TANGGALTJAM:MENIT:00+08:00" (+08:00 = WITA, +07:00 = WIB)
+   id        : unik di seluruh daftar, tanpa spasi (dipakai untuk centang "sudah dikumpulkan")
+   kelas     : "XI" atau "XII"
+   semester  : 1 atau 2
+   topik     : sama persis dengan nama di KURIKULUM
+   deadline  : "TAHUN-BULAN-TANGGALTJAM:MENIT:00+08:00" (+08:00 = WITA, +07:00 = WIB, +09:00 = WIT)
    formUrl   : link Google Form pengumpulan tugas
 */
 const TUGAS = [
+  /* ----- Kelas XI ----- */
   {
-    id: "algo-flowchart",
-    judul: "Flowchart Menghitung Nilai Rata-rata",
-    topik: "Algoritma",
-    deskripsi: "Buat flowchart yang menerima 5 nilai lalu menampilkan rata-rata dan keterangan lulus atau remedial. Foto atau ekspor ke PDF.",
-    deadline: "2026-11-06T23:59:00+08:00",
-    formUrl: "https://forms.gle/GANTI-DENGAN-LINK-FORM-1",
-  },
-  {
-    id: "python-kalkulator",
-    judul: "Program Kalkulator Sederhana Python",
-    topik: "Pemrograman",
-    deskripsi: "Buat kalkulator yang bisa tambah, kurang, kali, bagi. Kumpulkan file .py dan screenshot hasil jalannya.",
-    deadline: "2026-11-13T23:59:00+08:00",
-    formUrl: "https://forms.gle/GANTI-DENGAN-LINK-FORM-2",
-  },
-  {
-    id: "jaringan-topologi",
-    judul: "Gambar Topologi Jaringan Sekolah",
-    topik: "Jaringan",
-    deskripsi: "Gambar topologi jaringan di lab komputer sekolah beserta keterangan perangkat yang dipakai.",
-    deadline: "2026-11-20T23:59:00+08:00",
-    formUrl: "https://forms.gle/GANTI-DENGAN-LINK-FORM-3",
-  },
-  {
-    id: "data-survei",
-    judul: "Mini Survei Kelas dan Grafiknya",
-    topik: "Data",
-    deskripsi: "Survei 10 teman tentang aplikasi favorit, olah di spreadsheet, lalu buat satu grafik dan tulis kesimpulannya.",
+    id: "xi-gjb-praktikum",
+    kelas: "XI", semester: 1, topik: "Kinematika",
+    judul: "Laporan Praktikum Gerak Jatuh Bebas",
+    deskripsi: "Ukur waktu jatuh bola dari tiga ketinggian, hitung percepatan gravitasi, lalu tulis laporan singkat. Kumpulkan dalam bentuk PDF.",
     deadline: "2026-10-30T23:59:00+08:00",
-    formUrl: "https://forms.gle/GANTI-DENGAN-LINK-FORM-4",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-1",
+  },
+  {
+    id: "xi-newton",
+    kelas: "XI", semester: 1, topik: "Dinamika Gerak",
+    judul: "Soal Latihan Hukum Newton",
+    deskripsi: "Kerjakan 8 soal diagram gaya dan Hukum II Newton. Tulis dengan tangan, foto, lalu unggah.",
+    deadline: "2026-11-06T23:59:00+08:00",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-2",
+  },
+  {
+    id: "xi-statika-jembatan",
+    kelas: "XI", semester: 1, topik: "Statika Struktur",
+    judul: "Analisis Kesetimbangan Jembatan Sederhana",
+    deskripsi: "Gambar diagram gaya pada jembatan papan, lalu hitung gaya tumpuan di kedua ujungnya.",
+    deadline: "2026-11-13T23:59:00+08:00",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-3",
+  },
+  {
+    id: "xi-energi-rollercoaster",
+    kelas: "XI", semester: 1, topik: "Usaha dan Energi",
+    judul: "Proyek Energi Mekanik pada Roller Coaster",
+    deskripsi: "Rancang lintasan roller coaster sederhana dan hitung kecepatan di tiga titik dengan hukum kekekalan energi.",
+    deadline: "2026-11-20T23:59:00+08:00",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-4",
+  },
+
+  /* ----- Kelas XII ----- */
+  {
+    id: "xii-kapasitor",
+    kelas: "XII", semester: 1, topik: "Listrik Statis",
+    judul: "Soal Kapasitor Seri dan Paralel",
+    deskripsi: "Kerjakan 6 soal kapasitor beserta energi yang tersimpan. Tulis langkah pengerjaan lengkap.",
+    deadline: "2026-11-04T23:59:00+08:00",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-5",
+  },
+  {
+    id: "xii-kirchhoff",
+    kelas: "XII", semester: 1, topik: "Listrik Arus Searah (DC)",
+    judul: "Rangkaian Dua Loop dengan Hukum Kirchhoff",
+    deskripsi: "Selesaikan 3 rangkaian dua loop. Tunjukkan persamaan loop dan arah arus pada gambar.",
+    deadline: "2026-11-10T23:59:00+08:00",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-6",
+  },
+  {
+    id: "xii-induksi",
+    kelas: "XII", semester: 1, topik: "Kemagnetan",
+    judul: "Rangkuman Induksi Elektromagnetik",
+    deskripsi: "Buat rangkuman satu halaman tentang hukum Faraday dan Lenz, lengkap dengan dua contoh penerapan sehari-hari.",
+    deadline: "2026-11-18T23:59:00+08:00",
+    formUrl: "https://forms.gle/GANTI-LINK-FORM-7",
   },
 ];
 
 /* ---------- MATERI ----------
+   kelas, semester, topik : sama seperti di TUGAS
    jenis : "PDF" | "Slide" | "Video" | "Link"
-   url   : link file (Google Drive, YouTube, dll.) atau path file di repo, mis. "materi/algoritma.pdf"
+   url   : link file (Google Drive, YouTube, dll.) atau path file di repo, mis. "materi/kinematika.pdf"
 */
 const MATERI = [
+  /* ----- Kelas XI, semester 1 ----- */
   {
-    judul: "Pengantar Algoritma dan Flowchart",
-    topik: "Algoritma",
-    jenis: "Slide",
-    tanggal: "2026-10-12",
-    deskripsi: "Apa itu algoritma, simbol flowchart, dan contoh membuat nasi goreng versi flowchart.",
+    kelas: "XI", semester: 1, topik: "Kinematika", jenis: "Slide", tanggal: "2026-07-27",
+    judul: "Gerak Lurus: GLB dan GLBB",
+    deskripsi: "Posisi, kecepatan, percepatan, dan grafik gerak lurus beserta contoh soal.",
     url: "#",
   },
   {
-    judul: "Percabangan dan Perulangan",
-    topik: "Algoritma",
-    jenis: "PDF",
-    tanggal: "2026-10-19",
-    deskripsi: "Rangkuman if-else dan loop dengan latihan soal beserta kunci jawaban.",
+    kelas: "XI", semester: 1, topik: "Kinematika", jenis: "PDF", tanggal: "2026-08-10",
+    judul: "Gerak Parabola",
+    deskripsi: "Menguraikan kecepatan awal, jarak jangkauan, dan tinggi maksimum.",
     url: "#",
   },
   {
-    judul: "Python dari Nol: Variabel dan Tipe Data",
-    topik: "Pemrograman",
-    jenis: "Video",
-    tanggal: "2026-10-26",
-    deskripsi: "Video 15 menit yang mengikuti praktik di kelas. Siapkan Python atau buka Google Colab.",
+    kelas: "XI", semester: 1, topik: "Dinamika Gerak", jenis: "Video", tanggal: "2026-09-07",
+    judul: "Hukum Newton dan Diagram Gaya",
+    deskripsi: "Cara menggambar diagram gaya benda bebas dan memakai Hukum II Newton.",
     url: "#",
   },
   {
-    judul: "Fungsi dan Input di Python",
-    topik: "Pemrograman",
-    jenis: "PDF",
-    tanggal: "2026-11-02",
-    deskripsi: "Cara membuat fungsi, menerima input, dan mengubah tipe data. Dilengkapi contoh kalkulator.",
+    kelas: "XI", semester: 1, topik: "Dinamika Gerak", jenis: "PDF", tanggal: "2026-09-21",
+    judul: "Gaya Gesek dan Bidang Miring",
+    deskripsi: "Gesek statis dan kinetis, bidang miring, serta katrol sederhana.",
     url: "#",
   },
   {
-    judul: "Jenis dan Topologi Jaringan",
-    topik: "Jaringan",
-    jenis: "Slide",
-    tanggal: "2026-10-14",
-    deskripsi: "LAN, MAN, WAN, serta topologi bus, star, ring, dan mesh beserta kelebihannya.",
+    kelas: "XI", semester: 1, topik: "Statika Struktur", jenis: "Slide", tanggal: "2026-10-12",
+    judul: "Momen Gaya dan Kesetimbangan",
+    deskripsi: "Syarat kesetimbangan benda tegar dan titik berat, dilengkapi contoh jembatan dan tangga.",
     url: "#",
   },
   {
-    judul: "Cara Kerja Internet",
-    topik: "Jaringan",
-    jenis: "Link",
-    tanggal: "2026-10-21",
-    deskripsi: "Artikel pendamping tentang alamat IP, DNS, dan perjalanan satu halaman web ke layarmu.",
+    kelas: "XI", semester: 1, topik: "Usaha dan Energi", jenis: "PDF", tanggal: "2026-10-26",
+    judul: "Teorema Usaha dan Energi",
+    deskripsi: "Usaha oleh gaya konstan, energi kinetik, energi potensial, dan hukum kekekalan energi mekanik.",
+    url: "#",
+  },
+
+  /* ----- Kelas XII, semester 1 ----- */
+  {
+    kelas: "XII", semester: 1, topik: "Listrik Statis", jenis: "Slide", tanggal: "2026-07-28",
+    judul: "Hukum Coulomb dan Medan Listrik",
+    deskripsi: "Gaya antarmuatan, kuat medan listrik, dan garis medan.",
     url: "#",
   },
   {
-    judul: "Mengolah Data di Spreadsheet",
-    topik: "Data",
-    jenis: "Video",
-    tanggal: "2026-10-05",
-    deskripsi: "Rumus dasar, pengurutan, dan cara membuat grafik batang dan lingkaran.",
+    kelas: "XII", semester: 1, topik: "Listrik Statis", jenis: "PDF", tanggal: "2026-08-18",
+    judul: "Potensial Listrik dan Kapasitor",
+    deskripsi: "Energi potensial listrik, kapasitor keping sejajar, serta rangkaian seri dan paralel.",
+    url: "#",
+  },
+  {
+    kelas: "XII", semester: 1, topik: "Listrik Arus Searah (DC)", jenis: "Video", tanggal: "2026-09-08",
+    judul: "Hukum Ohm dan Rangkaian Seri-Paralel",
+    deskripsi: "Hambatan pengganti, kuat arus, dan beda potensial pada rangkaian campuran.",
+    url: "#",
+  },
+  {
+    kelas: "XII", semester: 1, topik: "Listrik Arus Searah (DC)", jenis: "PDF", tanggal: "2026-09-29",
+    judul: "Hukum Kirchhoff",
+    deskripsi: "Hukum I dan II Kirchhoff untuk rangkaian dua loop, lengkap dengan latihan.",
+    url: "#",
+  },
+  {
+    kelas: "XII", semester: 1, topik: "Kemagnetan", jenis: "Slide", tanggal: "2026-10-20",
+    judul: "Medan Magnet dan Gaya Lorentz",
+    deskripsi: "Medan magnet kawat berarus, solenoida, dan gaya pada muatan bergerak.",
     url: "#",
   },
 ];
 
 /* ---------- LANGKAH MENGUMPULKAN (boleh diubah) ---------- */
 const LANGKAH = [
-  "Kerjakan tugas sesuai petunjuk dan simpan hasilnya sebagai file atau foto.",
+  "Kerjakan tugas sesuai petunjuk dan simpan hasilnya sebagai PDF atau foto yang jelas terbaca.",
   "Klik tombol Kumpulkan di kartu tugas. Google Form akan terbuka di tab baru.",
   "Isi nama lengkap, kelas, lalu unggah file. Periksa lagi sebelum klik Kirim.",
   "Kembali ke sini dan centang Sudah kukumpulkan agar kamu tidak lupa.",

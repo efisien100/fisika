@@ -7,50 +7,143 @@
 
   const BULAN = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
   const HARI = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-  const STORE = "kelas-selesai-v1";
+  const STORE_DONE = "kelas-selesai-v1";
+  const STORE_KELAS = "kelas-pilihan-v1";
+  const KELAS_LIST = Object.keys(KURIKULUM);
 
-  /* ---------- Penyimpanan centang ---------- */
-  function loadDone() {
-    try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; }
+  /* ---------- Penyimpanan ---------- */
+  function lsGet(key, fallback) {
+    try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); } catch (e) { return fallback; }
   }
-  function saveDone(obj) {
-    try { localStorage.setItem(STORE, JSON.stringify(obj)); } catch (e) { /* abaikan */ }
+  function lsSet(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) { /* abaikan */ }
   }
-  let done = loadDone();
+  let done = lsGet(STORE_DONE, {});
 
   /* ---------- Util ---------- */
   const pad = (n) => String(n).padStart(2, "0");
-  function fmtJam(d) { return pad(d.getHours()) + "." + pad(d.getMinutes()); }
+  const fmtJam = (d) => pad(d.getHours()) + "." + pad(d.getMinutes());
   function statusOf(t) {
     const ms = new Date(t.deadline) - Date.now();
     if (ms < 0) return "closed";
-    if (ms < 3 * 24 * 3600 * 1000) return "soon";
-    return "open";
+    return ms < 3 * 24 * 3600 * 1000 ? "soon" : "open";
   }
-  function statusLabel(s) {
-    return { open: "Dibuka", soon: "Segera berakhir", closed: "Sudah lewat" }[s];
+  const statusLabel = (s) => ({ open: "Dibuka", soon: "Segera berakhir", closed: "Sudah lewat" }[s]);
+  const isPlaceholder = (url) => /GANTI/i.test(url || "");
+  function semesterSekarang() {
+    const bln = new Date().getMonth() + 1; // Juli-Des = semester 1
+    return bln >= 7 ? 1 : 2;
   }
-  function isPlaceholder(url) { return /GANTI/i.test(url); }
 
-  /* ---------- Isi identitas ---------- */
+  /* ---------- State ---------- */
+  const params = new URLSearchParams(location.search);
+  const fromUrl = (params.get("kelas") || "").toUpperCase();
+  const state = {
+    kelas: KELAS_LIST.includes(fromUrl) ? fromUrl : (KELAS_LIST.includes(lsGet(STORE_KELAS, "")) ? lsGet(STORE_KELAS, "") : KELAS_LIST[0]),
+    semester: semesterSekarang(),
+    topik: "Semua",
+    q: "",
+  };
+
+  const topikList = () => KURIKULUM[state.kelas][state.semester] || [];
+  const inScope = (x) => x.kelas === state.kelas && x.semester === state.semester && (state.topik === "Semua" || x.topik === state.topik);
+
+  /* ---------- Identitas ---------- */
   function fillIdentity() {
-    document.title = KELAS.mapel + " " + KELAS.kelas + " · Ruang Kelas";
-    $("#brandName").textContent = KELAS.mapel + " " + KELAS.kelas;
-    $("#heroMapel").textContent = KELAS.mapel;
-    $("#heroSapaan").textContent = KELAS.sapaan;
-    $("#labKelas").textContent = KELAS.kelas;
-    $("#labTahun").textContent = KELAS.tahunAjaran;
-    $("#labGuru").textContent = KELAS.guru;
-    $("#footMapel").textContent = KELAS.mapel;
-    $("#footKelas").textContent = "Kelas " + KELAS.kelas;
+    $("#brandName").textContent = "Ruang Kelas " + SITUS.mapel;
+    $("#heroMapel").textContent = SITUS.mapel;
+    $("#heroSapaan").textContent = SITUS.sapaan;
+    $("#labTahun").textContent = SITUS.tahunAjaran;
+    $("#labGuru").textContent = SITUS.guru;
+    $("#footMapel").textContent = SITUS.mapel;
   }
+
+  function fillKelas() {
+    $("#heroKelas").textContent = state.kelas;
+    $("#labKelas").textContent = "Kelas " + state.kelas;
+    document.title = SITUS.mapel + " kelas " + state.kelas + " · Ruang Kelas";
+    lsSet(STORE_KELAS, state.kelas);
+    try {
+      const u = new URL(location.href);
+      u.searchParams.set("kelas", state.kelas);
+      history.replaceState(null, "", u);
+    } catch (e) { /* abaikan */ }
+  }
+
+  /* ---------- Pemilih kelas / semester / topik ---------- */
+  function countFor(topik) {
+    const f = (x) => x.kelas === state.kelas && x.semester === state.semester && (topik === "Semua" || x.topik === topik);
+    return TUGAS.filter(f).length + MATERI.filter(f).length;
+  }
+
+  function renderTabs() {
+    $("#tabs").innerHTML = KELAS_LIST.map((k) =>
+      '<button type="button" class="tab" role="tab" id="tab-' + esc(k) + '" aria-selected="' + (k === state.kelas) + '" tabindex="' + (k === state.kelas ? 0 : -1) + '" data-kelas="' + esc(k) + '">Kelas ' + esc(k) + "</button>"
+    ).join("");
+  }
+
+  function renderSeg() {
+    $("#seg").innerHTML = [1, 2].map((s) =>
+      '<button type="button" class="seg-btn" aria-pressed="' + (s === state.semester) + '" data-smt="' + s + '">Semester ' + s + "</button>"
+    ).join("");
+  }
+
+  function renderChips() {
+    const all = ["Semua"].concat(topikList());
+    $("#chips").innerHTML = all.map((t) => {
+      const n = countFor(t);
+      return '<button type="button" class="chip" aria-pressed="' + (t === state.topik) + '" data-topik="' + esc(t) + '">' +
+        esc(t === "Semua" ? "Semua topik" : t) + ' <span class="chip-n">' + n + "</span></button>";
+    }).join("");
+  }
+
+  $("#tabs").addEventListener("click", (e) => {
+    const b = e.target.closest(".tab");
+    if (!b || b.dataset.kelas === state.kelas) return;
+    pilihKelas(b.dataset.kelas);
+  });
+  $("#tabs").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const i = KELAS_LIST.indexOf(state.kelas);
+    const n = KELAS_LIST[(i + (e.key === "ArrowRight" ? 1 : -1) + KELAS_LIST.length) % KELAS_LIST.length];
+    pilihKelas(n);
+    const t = $("#tab-" + n); if (t) t.focus();
+  });
+
+  function pilihKelas(k) {
+    state.kelas = k;
+    state.topik = "Semua";
+    state.q = "";
+    $("#search").value = "";
+    refreshAll();
+  }
+
+  $("#seg").addEventListener("click", (e) => {
+    const b = e.target.closest(".seg-btn");
+    if (!b) return;
+    state.semester = Number(b.dataset.smt);
+    state.topik = "Semua";
+    renderSeg(); renderChips(); renderTasks(); renderMateri();
+    const again = document.querySelector('.seg-btn[data-smt="' + state.semester + '"]');
+    if (again) again.focus();
+  });
+
+  $("#chips").addEventListener("click", (e) => {
+    const b = e.target.closest(".chip");
+    if (!b) return;
+    state.topik = b.dataset.topik;
+    renderChips(); renderTasks(); renderMateri();
+    const again = [...document.querySelectorAll(".chip")].find((c) => c.dataset.topik === state.topik);
+    if (again) again.focus();
+  });
+
+  $("#search").addEventListener("input", (e) => { state.q = e.target.value; renderMateri(); });
 
   /* ---------- Tugas ---------- */
   function renderTasks() {
-    const list = $("#taskList");
-    const sorted = TUGAS.slice().sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+    const rows = TUGAS.filter(inScope).sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
-    list.innerHTML = sorted.map((t) => {
+    $("#taskList").innerHTML = rows.map((t) => {
       const d = new Date(t.deadline);
       const st = statusOf(t);
       const isDone = !!done[t.id];
@@ -78,16 +171,17 @@
       );
     }).join("");
 
-    const sisa = TUGAS.filter((t) => !done[t.id] && statusOf(t) !== "closed").length;
+    $("#taskEmpty").hidden = rows.length > 0;
+    const sisa = rows.filter((t) => !done[t.id] && statusOf(t) !== "closed").length;
     $("#tugasRingkas").textContent =
-      sisa === 0 ? "Semua tugas aktif sudah kamu kumpulkan." : sisa + " tugas masih menunggu kamu.";
+      rows.length === 0 ? "" : (sisa === 0 ? "Semua tugas aktif di sini sudah kamu kumpulkan." : sisa + " tugas masih menunggu kamu.");
   }
 
   $("#taskList").addEventListener("change", (e) => {
     const cb = e.target.closest("input[data-id]");
     if (!cb) return;
     if (cb.checked) done[cb.dataset.id] = true; else delete done[cb.dataset.id];
-    saveDone(done);
+    lsSet(STORE_DONE, done);
     renderTasks();
     renderNext();
     const again = document.querySelector('input[data-id="' + cb.dataset.id + '"]');
@@ -102,30 +196,22 @@
     }
   });
 
-  /* ---------- Tenggat terdekat + hitung mundur ---------- */
+  /* ---------- Tenggat terdekat + hitung mundur (seluruh semester untuk kelas terpilih) ---------- */
   let nextTask = null;
 
-  function pickNext() {
-    const upcoming = TUGAS
-      .filter((t) => !done[t.id] && new Date(t.deadline) > Date.now())
-      .sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
-    return upcoming[0] || null;
-  }
-
   function renderNext() {
-    nextTask = pickNext();
-    const title = $("#nextTitle");
+    nextTask = TUGAS
+      .filter((t) => t.kelas === state.kelas && !done[t.id] && new Date(t.deadline) > Date.now())
+      .sort((a, b) => new Date(a.deadline) - new Date(b.deadline))[0] || null;
+
     const btn = $("#nextBtn");
-    const cap = $("#nextCaption");
     if (!nextTask) {
-      cap.textContent = "Tenggat terdekat";
-      title.textContent = "Tidak ada tugas yang menunggu.";
+      $("#nextTitle").textContent = "Tidak ada tugas yang menunggu.";
       $("#countdown").innerHTML = '<p class="cd-text">Santai dulu, atau baca materi baru.</p>';
       btn.hidden = true;
       return;
     }
-    cap.textContent = "Tenggat terdekat";
-    title.textContent = nextTask.judul;
+    $("#nextTitle").textContent = nextTask.judul;
     btn.hidden = false;
     btn.href = nextTask.formUrl;
     btn.target = "_blank";
@@ -139,38 +225,25 @@
     const ms = new Date(nextTask.deadline) - Date.now();
     if (ms <= 0) { renderTasks(); renderNext(); return; }
     const m = Math.floor(ms / 60000);
-    const hari = Math.floor(m / 1440);
-    const jam = Math.floor((m % 1440) / 60);
-    const mnt = m % 60;
     const late = ms < 24 * 3600 * 1000 ? " late" : "";
     $("#countdown").innerHTML =
-      '<div class="cd-unit' + late + '"><b>' + hari + "</b><span>hari</span></div>" +
-      '<div class="cd-unit' + late + '"><b>' + pad(jam) + "</b><span>jam</span></div>" +
-      '<div class="cd-unit' + late + '"><b>' + pad(mnt) + "</b><span>menit</span></div>";
+      '<div class="cd-unit' + late + '"><b>' + Math.floor(m / 1440) + "</b><span>hari</span></div>" +
+      '<div class="cd-unit' + late + '"><b>' + pad(Math.floor((m % 1440) / 60)) + "</b><span>jam</span></div>" +
+      '<div class="cd-unit' + late + '"><b>' + pad(m % 60) + "</b><span>menit</span></div>";
   }
 
   $("#nextBtn").addEventListener("click", (e) => {
-    if (isPlaceholder(e.currentTarget.dataset.form || "")) {
+    if (isPlaceholder(e.currentTarget.dataset.form)) {
       e.preventDefault();
       alert("Link Google Form belum diisi. Guru perlu mengganti formUrl di data.js.");
     }
   });
 
   /* ---------- Materi ---------- */
-  let topikAktif = "Semua";
-  let kata = "";
-
-  function renderChips() {
-    const all = ["Semua"].concat(TOPIK);
-    $("#chips").innerHTML = all.map((t) =>
-      '<button type="button" class="chip" aria-pressed="' + (t === topikAktif) + '" data-topik="' + esc(t) + '">' + esc(t) + "</button>"
-    ).join("");
-  }
-
   function renderMateri() {
-    const q = kata.trim().toLowerCase();
+    const q = state.q.trim().toLowerCase();
     const rows = MATERI
-      .filter((m) => topikAktif === "Semua" || m.topik === topikAktif)
+      .filter(inScope)
       .filter((m) => !q || (m.judul + " " + m.deskripsi + " " + m.topik).toLowerCase().includes(q))
       .sort((a, b) => (a.tanggal < b.tanggal ? 1 : -1));
 
@@ -189,19 +262,16 @@
         "</li>"
       );
     }).join("");
-    $("#matEmpty").hidden = rows.length > 0;
-  }
 
-  $("#chips").addEventListener("click", (e) => {
-    const b = e.target.closest(".chip");
-    if (!b) return;
-    topikAktif = b.dataset.topik;
-    renderChips();
-    renderMateri();
-    const again = document.querySelector('.chip[data-topik="' + topikAktif + '"]');
-    if (again) again.focus();
-  });
-  $("#search").addEventListener("input", (e) => { kata = e.target.value; renderMateri(); });
+    const empty = $("#matEmpty");
+    empty.hidden = rows.length > 0;
+    if (rows.length === 0) {
+      empty.textContent = q
+        ? "Tidak ada materi yang cocok dengan “" + state.q.trim() + "”. Coba kata kunci lain atau pilih Semua topik."
+        : "Materi untuk pilihan ini belum diunggah. Cek lagi nanti atau pilih topik lain.";
+    }
+    $("#materiRingkas").textContent = rows.length ? rows.length + " materi" : "";
+  }
 
   /* ---------- Langkah ---------- */
   function renderSteps() {
@@ -209,11 +279,18 @@
   }
 
   /* ---------- Mulai ---------- */
+  function refreshAll() {
+    fillKelas();
+    renderTabs();
+    renderSeg();
+    renderChips();
+    renderTasks();
+    renderMateri();
+    renderNext();
+  }
+
   fillIdentity();
-  renderTasks();
-  renderNext();
-  renderChips();
-  renderMateri();
   renderSteps();
+  refreshAll();
   setInterval(tick, 30000);
 })();
