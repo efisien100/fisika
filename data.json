@@ -1,0 +1,151 @@
+{
+  "situs": {
+    "mapel": "Fisika",
+    "guru": "Pak Seno",
+    "tahunAjaran": "2026/2027",
+    "zona": "+08:00",
+    "sapaan": "Pilih kelasmu, cek tenggat tugas, lalu buka materi yang kamu butuhkan. Tugas dikumpulkan lewat tombol di tiap kartu."
+  },
+  "kurikulum": {
+    "XI": {
+      "1": ["Kinematika", "Dinamika Gerak", "Statika Struktur", "Usaha dan Energi", "Fluida Statis dan Dinamis"],
+      "2": ["Gelombang, Bunyi, dan Cahaya", "Suhu dan Kalor", "Termodinamika"]
+    },
+    "XII": {
+      "1": ["Listrik Statis", "Listrik Arus Searah (DC)", "Kemagnetan", "Arus Bolak-Balik (AC)", "Gelombang Elektromagnetik"],
+      "2": ["Pengantar Elektronika Digital", "Relativitas", "Gejala Kuantum", "Fisika Inti dan Radioaktivitas"]
+    }
+  },
+  "tugas": [
+    {
+      "id": "xi-gjb-praktikum",
+      "kelas": "XI", "semester": 1, "topik": "Kinematika",
+      "judul": "Laporan Praktikum Gerak Jatuh Bebas",
+      "deskripsi": "Ukur waktu jatuh bola dari tiga ketinggian, hitung percepatan gravitasi, lalu tulis laporan singkat. Kumpulkan dalam bentuk PDF.",
+      "deadline": "2026-10-30T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-1"
+    },
+    {
+      "id": "xi-newton",
+      "kelas": "XI", "semester": 1, "topik": "Dinamika Gerak",
+      "judul": "Soal Latihan Hukum Newton",
+      "deskripsi": "Kerjakan 8 soal diagram gaya dan Hukum II Newton. Tulis dengan tangan, foto, lalu unggah.",
+      "deadline": "2026-11-06T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-2"
+    },
+    {
+      "id": "xi-statika-jembatan",
+      "kelas": "XI", "semester": 1, "topik": "Statika Struktur",
+      "judul": "Analisis Kesetimbangan Jembatan Sederhana",
+      "deskripsi": "Gambar diagram gaya pada jembatan papan, lalu hitung gaya tumpuan di kedua ujungnya.",
+      "deadline": "2026-11-13T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-3"
+    },
+    {
+      "id": "xi-energi-rollercoaster",
+      "kelas": "XI", "semester": 1, "topik": "Usaha dan Energi",
+      "judul": "Proyek Energi Mekanik pada Roller Coaster",
+      "deskripsi": "Rancang lintasan roller coaster sederhana dan hitung kecepatan di tiga titik dengan hukum kekekalan energi.",
+      "deadline": "2026-11-20T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-4"
+    },
+    {
+      "id": "xii-kapasitor",
+      "kelas": "XII", "semester": 1, "topik": "Listrik Statis",
+      "judul": "Soal Kapasitor Seri dan Paralel",
+      "deskripsi": "Kerjakan 6 soal kapasitor beserta energi yang tersimpan. Tulis langkah pengerjaan lengkap.",
+      "deadline": "2026-11-04T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-5"
+    },
+    {
+      "id": "xii-kirchhoff",
+      "kelas": "XII", "semester": 1, "topik": "Listrik Arus Searah (DC)",
+      "judul": "Rangkaian Dua Loop dengan Hukum Kirchhoff",
+      "deskripsi": "Selesaikan 3 rangkaian dua loop. Tunjukkan persamaan loop dan arah arus pada gambar.",
+      "deadline": "2026-11-10T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-6"
+    },
+    {
+      "id": "xii-induksi",
+      "kelas": "XII", "semester": 1, "topik": "Kemagnetan",
+      "judul": "Rangkuman Induksi Elektromagnetik",
+      "deskripsi": "Buat rangkuman satu halaman tentang hukum Faraday dan Lenz, lengkap dengan dua contoh penerapan sehari-hari.",
+      "deadline": "2026-11-18T23:59:00+08:00",
+      "formUrl": "https://forms.gle/GANTI-LINK-FORM-7"
+    }
+  ],
+  "materi": [
+    {
+      "kelas": "XI", "semester": 1, "topik": "Kinematika", "jenis": "Slide", "tanggal": "2026-07-27",
+      "judul": "Gerak Lurus: GLB dan GLBB",
+      "deskripsi": "Posisi, kecepatan, percepatan, dan grafik gerak lurus beserta contoh soal.",
+      "url": "#"
+    },
+    {
+      "kelas": "XI", "semester": 1, "topik": "Kinematika", "jenis": "PDF", "tanggal": "2026-08-10",
+      "judul": "Gerak Parabola",
+      "deskripsi": "Menguraikan kecepatan awal, jarak jangkauan, dan tinggi maksimum.",
+      "url": "#"
+    },
+    {
+      "kelas": "XI", "semester": 1, "topik": "Dinamika Gerak", "jenis": "Video", "tanggal": "2026-09-07",
+      "judul": "Hukum Newton dan Diagram Gaya",
+      "deskripsi": "Cara menggambar diagram gaya benda bebas dan memakai Hukum II Newton.",
+      "url": "#"
+    },
+    {
+      "kelas": "XI", "semester": 1, "topik": "Dinamika Gerak", "jenis": "PDF", "tanggal": "2026-09-21",
+      "judul": "Gaya Gesek dan Bidang Miring",
+      "deskripsi": "Gesek statis dan kinetis, bidang miring, serta katrol sederhana.",
+      "url": "#"
+    },
+    {
+      "kelas": "XI", "semester": 1, "topik": "Statika Struktur", "jenis": "Slide", "tanggal": "2026-10-12",
+      "judul": "Momen Gaya dan Kesetimbangan",
+      "deskripsi": "Syarat kesetimbangan benda tegar dan titik berat, dilengkapi contoh jembatan dan tangga.",
+      "url": "#"
+    },
+    {
+      "kelas": "XI", "semester": 1, "topik": "Usaha dan Energi", "jenis": "PDF", "tanggal": "2026-10-26",
+      "judul": "Teorema Usaha dan Energi",
+      "deskripsi": "Usaha oleh gaya konstan, energi kinetik, energi potensial, dan hukum kekekalan energi mekanik.",
+      "url": "#"
+    },
+    {
+      "kelas": "XII", "semester": 1, "topik": "Listrik Statis", "jenis": "Slide", "tanggal": "2026-07-28",
+      "judul": "Hukum Coulomb dan Medan Listrik",
+      "deskripsi": "Gaya antarmuatan, kuat medan listrik, dan garis medan.",
+      "url": "#"
+    },
+    {
+      "kelas": "XII", "semester": 1, "topik": "Listrik Statis", "jenis": "PDF", "tanggal": "2026-08-18",
+      "judul": "Potensial Listrik dan Kapasitor",
+      "deskripsi": "Energi potensial listrik, kapasitor keping sejajar, serta rangkaian seri dan paralel.",
+      "url": "#"
+    },
+    {
+      "kelas": "XII", "semester": 1, "topik": "Listrik Arus Searah (DC)", "jenis": "Video", "tanggal": "2026-09-08",
+      "judul": "Hukum Ohm dan Rangkaian Seri-Paralel",
+      "deskripsi": "Hambatan pengganti, kuat arus, dan beda potensial pada rangkaian campuran.",
+      "url": "#"
+    },
+    {
+      "kelas": "XII", "semester": 1, "topik": "Listrik Arus Searah (DC)", "jenis": "PDF", "tanggal": "2026-09-29",
+      "judul": "Hukum Kirchhoff",
+      "deskripsi": "Hukum I dan II Kirchhoff untuk rangkaian dua loop, lengkap dengan latihan.",
+      "url": "#"
+    },
+    {
+      "kelas": "XII", "semester": 1, "topik": "Kemagnetan", "jenis": "Slide", "tanggal": "2026-10-20",
+      "judul": "Medan Magnet dan Gaya Lorentz",
+      "deskripsi": "Medan magnet kawat berarus, solenoida, dan gaya pada muatan bergerak.",
+      "url": "#"
+    }
+  ],
+  "langkah": [
+    "Kerjakan tugas sesuai petunjuk dan simpan hasilnya sebagai PDF atau foto yang jelas terbaca.",
+    "Klik tombol Kumpulkan di kartu tugas. Google Form akan terbuka di tab baru.",
+    "Isi nama lengkap, kelas, lalu unggah file. Periksa lagi sebelum klik Kirim.",
+    "Kembali ke sini dan centang Sudah kukumpulkan agar kamu tidak lupa."
+  ]
+}
