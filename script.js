@@ -3,10 +3,23 @@
 
   const $ = (s) => document.querySelector(s);
 
+  const loader = document.getElementById("loader");
+  const slowTimer = setTimeout(() => {
+    const t = loader && loader.querySelector(".loader-text");
+    if (t) t.textContent = "Masih memuat. Periksa koneksi internetmu.";
+  }, 8000);
+  function hideLoader() {
+    clearTimeout(slowTimer);
+    if (!loader) return;
+    loader.classList.add("done");
+    setTimeout(() => loader.remove(), 450);
+  }
+
   fetch("data.json", { cache: "no-store" })
     .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
     .then(boot)
     .catch(() => {
+      hideLoader();
       const m = $("main");
       if (m) {
         m.innerHTML =
@@ -17,6 +30,7 @@
 
   function boot(DATA) {
     const SITUS = DATA.situs || {};
+    if (window.Tema) window.Tema.setDefault(SITUS.tema);
     const KURIKULUM = DATA.kurikulum || {};
     const TUGAS = DATA.tugas || [];
     const MATERI = DATA.materi || [];
@@ -68,6 +82,7 @@
 
     /* ---------- Identitas ---------- */
     function fillIdentity() {
+      $("#footKelasList").textContent = KELAS_LIST.length ? "Kelas " + KELAS_LIST.join(", ") : "";
       $("#brandName").textContent = "Ruang Kelas " + (SITUS.mapel || "");
       $("#heroMapel").textContent = SITUS.mapel || "";
       $("#heroSapaan").textContent = SITUS.sapaan || "";
@@ -310,5 +325,6 @@
     renderSteps();
     refreshAll();
     setInterval(tick, 30000);
+    hideLoader();
   }
 })();

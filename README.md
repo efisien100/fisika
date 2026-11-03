@@ -1,26 +1,34 @@
 # Ruang Kelas Fisika
 
-Website statis untuk membagikan materi dan menerima tugas siswa kelas XI dan XII lewat Google Form, dengan halaman admin untuk mengisi konten tanpa mengedit kode.
+Website statis untuk membagikan materi dan menerima tugas siswa kelas X, XI, dan XII lewat Google Form, dengan halaman admin untuk mengisi konten tanpa mengedit kode.
 
-- Situs siswa: `https://namakamu.github.io/` (tab Kelas XI dan Kelas XII)
-- Link langsung per kelas: `?kelas=XI` atau `?kelas=XII`
-- Halaman admin: `https://namakamu.github.io/admin.html`
+- Situs siswa: `https://namakamu.github.io/` (tab Kelas X, XI, XII)
+- Link langsung per kelas: `?kelas=X`, `?kelas=XI`, atau `?kelas=XII`
+- Halaman admin: `https://namakamu.github.io/admin.html` (atau klik **Masuk guru** di bagian bawah situs)
+- Tema: tombol **Tema** di pojok kanan atas, 5 pilihan (Buku Tulis, Malam, Papan Tulis, Permen, Laut)
 
 ## Isi folder
 
 | File | Fungsi |
 |------|--------|
-| `index.html`, `style.css`, `script.js` | Situs untuk siswa |
+| `index.html`, `style.css`, `script.js`, `theme.js` | Situs untuk siswa (`theme.js` = pilihan tema) |
 | `admin.html`, `admin.css`, `admin.js` | Halaman admin |
 | `data.json` | Seluruh isi situs: pengaturan, topik, tugas, materi |
 | `materi/` | Folder file yang diunggah lewat admin (dibuat otomatis) |
 
-## Pasang di GitHub Pages
+## Menghubungkan ke github.io (GitHub Pages)
 
-1. Buat repository baru di GitHub, misalnya `namakamu.github.io`.
-2. Upload semua file di zip (`Add file > Upload files`), lalu **Commit changes**.
-3. Buka **Settings > Pages**, pilih **Deploy from a branch**, branch `main`, folder `/ (root)`, lalu **Save**.
-4. Tunggu 1 sampai 3 menit, lalu buka alamat situsmu.
+1. Daftar di github.com (gratis), lalu klik **+ > New repository**.
+2. **Nama repository** menentukan alamat situs:
+   - `namakamu.github.io` (persis sama dengan username-mu) menghasilkan alamat `https://namakamu.github.io/`
+   - nama lain, mis. `fisika`, menghasilkan `https://namakamu.github.io/fisika/`
+   Pilih **Public**, lalu **Create repository**.
+3. Ekstrak zip di komputer. Di halaman repository klik **uploading an existing file**, lalu tarik **isi folder** (file `index.html`, `admin.html`, `data.json`, dan seterusnya, bukan folder pembungkusnya). Klik **Commit changes**.
+4. Buka **Settings > Pages**. Pada *Build and deployment* pilih **Deploy from a branch**, branch `main`, folder `/ (root)`, lalu **Save**.
+5. Tunggu 1 sampai 3 menit. Alamat situs muncul di bagian atas halaman Pages (*Your site is live at ...*). Buka dan bagikan ke siswa.
+6. Jika muncul 404, pastikan `index.html` ada di lapisan paling atas repository, bukan di dalam folder.
+
+Domain sendiri (mis. `kelasfisika.sch.id`) bisa dipasang di **Settings > Pages > Custom domain**.
 
 ## Membuat token untuk halaman admin (sekali saja)
 
@@ -32,12 +40,18 @@ Halaman admin menyimpan perubahan dengan membuat commit ke repository-mu, jadi i
 4. **Permissions > Repository permissions**: ubah **Contents** menjadi **Read and write**.
 5. **Generate token**, salin. Token hanya tampil sekali.
 
+## Cara masuk admin
+
+1. Buka `https://namakamu.github.io/admin.html`, atau klik **Masuk guru** di bagian paling bawah situs.
+2. Isi **Repository** (`namakamu/namakamu.github.io`), **Branch** (`main`), dan **Token** yang dibuat pada langkah di atas, lalu klik **Masuk**.
+3. Selesai bekerja, klik **Keluar** di kanan atas, terutama di komputer bersama.
+
 ## Memakai halaman admin
 
 1. Buka `/admin.html`, isi repository (`namakamu/namakamu.github.io`), branch (`main`), dan token, lalu **Masuk**.
 2. Tab **Tugas** dan **Materi**: tambah, ubah, atau hapus. Untuk materi, kamu bisa menempel link Google Drive atau YouTube, atau **Unggah file** (maksimal 25 MB) yang disimpan di folder `materi/`.
-3. Tab **Topik**: tambah, ubah nama, urutkan, atau hapus topik per kelas dan semester. Mengubah nama topik ikut memperbarui tugas dan materi yang memakainya. Topik yang masih dipakai tidak bisa dihapus.
-4. Tab **Pengaturan**: nama guru, tahun ajaran, zona waktu tenggat (WIB, WITA, WIT), kalimat sambutan, dan langkah mengumpulkan tugas.
+3. Tab **Topik**: tambah, ubah nama, urutkan, atau hapus topik per kelas dan semester. Topik kelas X hanya contoh, sesuaikan dengan kurikulummu. Mengubah nama topik ikut memperbarui tugas dan materi yang memakainya. Topik yang masih dipakai tidak bisa dihapus.
+4. Tab **Pengaturan**: nama guru, tahun ajaran, zona waktu tenggat (WIB, WITA, WIT), **tema bawaan**, kalimat sambutan, dan langkah mengumpulkan tugas. Siswa tetap bisa memilih tema sendiri, dan pilihannya diingat di perangkat mereka.
 5. Klik **Simpan ke GitHub**. Situs siswa berubah dalam 1 sampai 3 menit.
 
 Perubahan baru terbit setelah kamu klik **Simpan ke GitHub**. Jika ada perubahan yang belum disimpan, bilah di bagian atas berwarna kuning.

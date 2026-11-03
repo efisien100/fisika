@@ -9,8 +9,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
 </head>
 <body>
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="atom" aria-hidden="true"><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="nuc"></i></div>
+    <p class="loader-text">Memuat materi dan tugas…</p>
+  </div>
   <a class="skip" href="#tugas">Langsung ke tugas</a>
 
   <header class="top">
@@ -18,12 +23,15 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span id="brandName">Ruang Kelas Fisika</span>
     </a>
-    <nav aria-label="Menu utama">
-      <a href="#pilih">Kelas</a>
-      <a href="#tugas">Tugas</a>
-      <a href="#materi">Materi</a>
-      <a href="#cara">Cara kumpul</a>
-    </nav>
+    <div class="top-right">
+      <nav aria-label="Menu utama">
+        <a href="#pilih">Kelas</a>
+        <a href="#tugas">Tugas</a>
+        <a href="#materi">Materi</a>
+        <a href="#cara">Cara kumpul</a>
+      </nav>
+      <details class="theme" id="themePicker"></details>
+    </div>
   </header>
 
   <main>
@@ -101,8 +109,9 @@
   </main>
 
   <footer class="foot">
-    <p>Ruang Kelas · <span id="footMapel"></span> · Kelas XI dan XII</p>
+    <p>Ruang Kelas · <span id="footMapel"></span> · <span id="footKelasList"></span></p>
     <p class="foot-small">Centang “sudah dikumpulkan” hanya tersimpan di browser ini sebagai pengingat. Bukti kumpul tetap ada di Google Form.</p>
+    <p class="foot-small"><a href="admin.html">Masuk guru</a></p>
   </footer>
 
   <script src="script.js"></script>

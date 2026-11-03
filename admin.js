@@ -125,6 +125,7 @@
     if (!conn) return;
     const btn = $("#saveBtn");
     btn.disabled = true;
+    btn.classList.add("is-busy");
     btn.textContent = "Menyimpan…";
     try {
       const body = {
@@ -141,6 +142,7 @@
       toast(explain(e), "err");
     } finally {
       btn.textContent = "Simpan ke GitHub";
+      btn.classList.remove("is-busy");
       renderBar();
     }
   }
@@ -185,6 +187,7 @@
   }
   function setBusy(b) {
     $("#loginBtn").disabled = b;
+    $("#loginBtn").classList.toggle("is-busy", b);
     $("#loginBtn").textContent = b ? "Memeriksa…" : "Masuk";
   }
 
@@ -255,6 +258,10 @@
 
   /* ---------- Kerangka admin ---------- */
   function showApp() {
+    if (window.Tema) {
+      $("#sTema").innerHTML = Tema.list.map((t) => '<option value="' + t.id + '">' + t.nama + "</option>").join("");
+      Tema.apply(data.situs.tema || "buku");
+    }
     $("#login").hidden = true;
     $("#app").hidden = false;
     $("#logoutBtn").hidden = false;
@@ -445,7 +452,7 @@
       $("#upFile").addEventListener("change", async (e) => {
         const f = e.target.files[0];
         if (!f) return;
-        upBtn.disabled = true; upBtn.textContent = "Mengunggah…";
+        upBtn.disabled = true; upBtn.classList.add("is-busy"); upBtn.textContent = "Mengunggah…";
         try {
           $("#f-url").value = await uploadFile(f);
           const ext = (f.name.split(".").pop() || "").toLowerCase();
@@ -456,7 +463,7 @@
         } catch (err) {
           const m = $("#frmErr"); m.textContent = explain(err); m.hidden = false;
         } finally {
-          upBtn.disabled = false; upBtn.textContent = "Unggah file";
+          upBtn.disabled = false; upBtn.classList.remove("is-busy"); upBtn.textContent = "Unggah file";
         }
       });
     }
@@ -579,9 +586,10 @@
 
   /* ---------- Pengaturan ---------- */
   function renderSitus() {
-    $$("[data-situs]").forEach((el) => { el.value = data.situs[el.dataset.situs] || (el.dataset.situs === "zona" ? "+08:00" : ""); });
+    $$("[data-situs]").forEach((el) => { el.value = data.situs[el.dataset.situs] || (el.dataset.situs === "zona" ? "+08:00" : el.dataset.situs === "tema" ? "buku" : ""); });
     $("#sLangkah").value = (data.langkah || []).join("\n");
   }
+  $("#sTema").addEventListener("change", (e) => { if (window.Tema) Tema.apply(e.target.value); });
   $$("[data-situs]").forEach((el) => {
     el.addEventListener("input", () => { data.situs[el.dataset.situs] = el.value; markDirty(); });
   });
