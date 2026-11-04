@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruang Kelas Fisika</title>
+  <meta name="description" content="Materi dan pengumpulan tugas Fisika untuk siswa SMA.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="theme.js"></script>
+</head>
+<body>
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="atom" aria-hidden="true"><i class="r1"></i><i class="r2"></i><i class="r3"></i><i class="nuc"></i></div>
+    <p class="loader-text">Memuat materi dan tugas…</p>
+  </div>
+  <a class="skip" href="#tugas">Langsung ke tugas</a>
+
+  <header class="top">
+    <a class="brand" href="#" aria-label="Kembali ke atas">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span id="brandName">Ruang Kelas Fisika</span>
+    </a>
+    <div class="top-right">
+      <nav aria-label="Menu utama">
+        <a href="#pilih">Kelas</a>
+        <a href="#tugas">Tugas</a>
+        <a href="#materi">Materi</a>
+        <a href="#cara">Cara kumpul</a>
+      </nav>
+      <details class="theme" id="themePicker"></details>
+    </div>
+  </header>
+
+  <main>
+    <p class="notice" id="notice" role="status" hidden></p>
+    <section class="hero">
+      <div class="hero-text">
+        <h1><span id="heroMapel">Fisika</span> kelas <span id="heroKelas">XI</span>: materi dan tugasmu</h1>
+        <p id="heroSapaan" class="lead"></p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#tugas">Lihat tugas</a>
+          <a class="btn btn-ghost" href="#materi">Buka materi</a>
+        </div>
+      </div>
+
+      <aside class="label-card" aria-live="polite" aria-label="Tenggat terdekat">
+        <div class="label-card-head">
+          <span id="labKelas">Kelas XI</span>
+          <span id="labTahun">2026/2027</span>
+        </div>
+        <div class="label-card-body">
+          <p class="label-small" id="nextCaption">Tenggat terdekat</p>
+          <p class="label-title" id="nextTitle">Memuat…</p>
+          <div class="countdown" id="countdown" role="timer"></div>
+          <a class="btn btn-primary btn-block" id="nextBtn" href="#tugas" hidden>Kumpulkan sekarang</a>
+        </div>
+        <div class="label-card-foot">Guru: <strong id="labGuru">Pak Seno</strong></div>
+      </aside>
+    </section>
+
+    <section id="pilih" class="selector" aria-label="Pilih kelas, semester, dan topik">
+      <div class="tabs" role="tablist" aria-label="Kelas" id="tabs"></div>
+      <div class="selector-panel">
+        <div class="selector-row">
+          <span class="selector-label" id="smtLabel">Semester</span>
+          <div class="seg" id="seg" role="group" aria-labelledby="smtLabel"></div>
+        </div>
+        <div class="selector-row">
+          <span class="selector-label" id="topikLabel">Topik</span>
+          <div class="chips" id="chips" role="group" aria-labelledby="topikLabel"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tugas" class="block" aria-labelledby="tugasH">
+      <div class="block-head">
+        <h2 id="tugasH">Tugas</h2>
+        <p class="block-note" id="tugasRingkas"></p>
+      </div>
+      <ul class="task-list" id="taskList"></ul>
+      <p class="empty" id="taskEmpty" hidden>Belum ada tugas untuk pilihan ini.</p>
+    </section>
+
+    <section id="materi" class="block" aria-labelledby="materiH">
+      <div class="block-head">
+        <h2 id="materiH">Materi</h2>
+        <p class="block-note" id="materiRingkas"></p>
+      </div>
+
+      <div class="tools">
+        <label class="search">
+          <span class="sr">Cari materi</span>
+          <input type="search" id="search" placeholder="Cari materi, mis. Kirchhoff" autocomplete="off">
+        </label>
+      </div>
+
+      <ul class="mat-list" id="matList"></ul>
+      <p class="empty" id="matEmpty" hidden></p>
+    </section>
+
+    <section id="cara" class="block how" aria-labelledby="caraH">
+      <div class="block-head">
+        <h2 id="caraH">Cara mengumpulkan tugas</h2>
+      </div>
+      <ol class="steps" id="steps"></ol>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Ruang Kelas · <span id="footMapel"></span> · <span id="footKelasList"></span></p>
+    <p class="foot-small">Centang “sudah dikumpulkan” hanya tersimpan di browser ini sebagai pengingat. Bukti kumpul tetap ada di Google Form.</p>
+    <p class="foot-small"><a href="#" id="adminLink" target="_blank" rel="noopener">Masuk guru</a></p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
